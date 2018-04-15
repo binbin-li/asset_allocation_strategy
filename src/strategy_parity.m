@@ -54,14 +54,7 @@ stock_w(1) = stock_weight(1) / port_parity(1,4);%计算股票数;
 bond_w(1) = bond_weight(1) / port_parity(1,5);%计算债券数;
 
 %计算风险平价策略净值;
-for day = 1:20
-    coe(day) = coe(1);
-    stock_weight(day) = stock_weight(1);
-    bond_weight(day) = bond_weight(1);
-    stock_w(day) = stock_w(1);
-    bond_w(day) = bond_w(1);
-    port_parity(day,6) = stock_w(day)*port_parity(day,4) + bond_w(day)*port_parity(day,5);
-end
+[coe, stock_weight, bond_weight, stock_w, bond_w, port_parity] = calculateStrategyRisk(20, 1, coe, stock_weight, bond_weight, stock_w, bond_w, port_parity, days_since_2009_01_05);
 
 %% 2.4 循环重复上述步骤
 for k = 1:floor(days_since_2009_01_05/20)
@@ -82,14 +75,7 @@ for k = 1:floor(days_since_2009_01_05/20)
     bond_w(start_date) = bond_weight(start_date)*port_parity(20*k,6)/port_parity(start_date,5);
 
     %计算风险平价策略净值;
-    for day = start_date:min(20+20*k,days_since_2009_01_05)
-        coe(day) = coe(start_date);
-        stock_weight(day) = stock_weight(start_date);
-        bond_weight(day) = bond_weight(start_date);
-        stock_w(day) = stock_w(start_date);
-        bond_w(day) = bond_w(start_date);
-        port_parity(day,6) = stock_w(day)*port_parity(day,4) + bond_w(day)*port_parity(day,5);
-    end
+    [coe, stock_weight, bond_weight, stock_w, bond_w, port_parity] = calculateStrategyRisk(20, start_date, coe, stock_weight, bond_weight, stock_w, bond_w, port_parity, days_since_2009_01_05);
 end
    
 %% 三、基础风险平价组合的评价
