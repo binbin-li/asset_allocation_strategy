@@ -25,11 +25,7 @@ bond_w = zeros(days_since_2009_01_05,1);%债券数序列
 %第一个月月初股票数和债券数
 stock_w(1) = 0.4;
 bond_w(1) = 0.6;
-for day = 1:20
-	stock_w(day) = stock_w(1);
-	bond_w(day) = bond_w(1);
-	port_4060(day,6) = stock_w(day) * port_4060(day,4) + bond_w(day) * port_4060(day,5);
-end
+[stock_w, bond_w, port_4060] = calculateCombinationValue(20, 1, stock_w, bond_w, port_4060, days_since_2009_01_05);
 
 %% 2.3循环重复上述步骤
 for k = 1:floor(days_since_2009_01_05/20)
@@ -38,11 +34,7 @@ for k = 1:floor(days_since_2009_01_05/20)
 	stock_w(start_date) = 0.4*port_4060(k*20,6)/port_4060(start_date,4);
 	bond_w(start_date) = 0.6*port_4060(k*20,6)/port_4060(start_date,5);
 	%计算每天的组合净值;
-	for day = start_date:min(k*20+20,days_since_2009_01_05)%防止超过样本数;
-		stock_w(day) = stock_w(start_date);
-		bond_w(day) = bond_w(start_date);
-		port_4060(day,6) = stock_w(day)*port_4060(day,4)+bond_w(day)*port_4060(day,5);
-	end
+	[stock_w, bond_w, port_4060] = calculateCombinationValue(20, start_date, stock_w, bond_w, port_4060, days_since_2009_01_05);
 end
 
 %% 2.4 40/60组合的评价;
