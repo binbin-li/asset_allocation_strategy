@@ -104,5 +104,4 @@ stock = port_parity(:,4);
 bond = port_parity(:,5);
 parity = port_parity(:,6);
 plot(day,stock,day,bond,day,parity);
-
-
+saveResult(stock, bond, parity, price(:, 1:3), '../out/parity_result.csv');
