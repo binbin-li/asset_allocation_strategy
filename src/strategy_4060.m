@@ -62,4 +62,4 @@ stock = port_4060(:,4);
 bond = port_4060(:,5);
 port4060 = port_4060(:,6);
 plot(day,stock,day,bond,day,port4060);
-
+saveResult(stock, bond, port4060, price(:, 1:3), '../out/4060_result.csv');
